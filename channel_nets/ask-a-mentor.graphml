@@ -1,0 +1,605 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<graphml xmlns="http://graphml.graphdrawing.org/xmlns"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://graphml.graphdrawing.org/xmlns
+         http://graphml.graphdrawing.org/xmlns/1.0/graphml.xsd">
+<!-- Created by igraph -->
+  <key id="v_name" for="node" attr.name="name" attr.type="string"/>
+  <key id="v_Team" for="node" attr.name="Team" attr.type="string"/>
+  <key id="v_index" for="node" attr.name="index" attr.type="string"/>
+  <key id="v_comp_team" for="node" attr.name="comp_team" attr.type="string"/>
+  <key id="e_Timestamp" for="edge" attr.name="Timestamp" attr.type="double"/>
+  <key id="e_Channel" for="edge" attr.name="Channel" attr.type="string"/>
+  <key id="e_Type" for="edge" attr.name="Type" attr.type="string"/>
+  <graph id="G" edgedefault="directed">
+    <node id="n0">
+      <data key="v_name">U01DM05K125</data>
+      <data key="v_Team">Dropped Out / Non Participant</data>
+      <data key="v_index">#C6B18B</data>
+      <data key="v_comp_team">Dropped Out</data>
+    </node>
+    <node id="n1">
+      <data key="v_name">U01DYP4PB7A</data>
+      <data key="v_Team">Safeskye - Dropped Out</data>
+      <data key="v_index">#C6B18B</data>
+      <data key="v_comp_team">Dropped Out</data>
+    </node>
+    <node id="n2">
+      <data key="v_name">U01CWPSRRFY</data>
+      <data key="v_Team">Dropped Out / Non Participant</data>
+      <data key="v_index">#C6B18B</data>
+      <data key="v_comp_team">Dropped Out</data>
+    </node>
+    <node id="n3">
+      <data key="v_name">U01CXLVJMRD</data>
+      <data key="v_Team">Safeskye - Dropped Out</data>
+      <data key="v_index">#C6B18B</data>
+      <data key="v_comp_team">Dropped Out</data>
+    </node>
+    <node id="n4">
+      <data key="v_name">U01D3FWKESW</data>
+      <data key="v_Team">Dropped Out / Non Participant</data>
+      <data key="v_index">#C6B18B</data>
+      <data key="v_comp_team">Dropped Out</data>
+    </node>
+    <node id="n5">
+      <data key="v_name">U01DUKH034Z</data>
+      <data key="v_Team">External Resource</data>
+      <data key="v_index">#B3B3B3</data>
+      <data key="v_comp_team">External Resource</data>
+    </node>
+    <node id="n6">
+      <data key="v_name">U01CWKW26E9</data>
+      <data key="v_Team">Mentor</data>
+      <data key="v_index">#AB98C8</data>
+      <data key="v_comp_team">Mentor</data>
+    </node>
+    <node id="n7">
+      <data key="v_name">U01DWMPAEMA</data>
+      <data key="v_Team">Mentor</data>
+      <data key="v_index">#AB98C8</data>
+      <data key="v_comp_team">Mentor</data>
+    </node>
+    <node id="n8">
+      <data key="v_name">U01D9NTEZQU</data>
+      <data key="v_Team">Mentor</data>
+      <data key="v_index">#AB98C8</data>
+      <data key="v_comp_team">Mentor</data>
+    </node>
+    <node id="n9">
+      <data key="v_name">U01CWKVMXPF</data>
+      <data key="v_Team">Mentor</data>
+      <data key="v_index">#AB98C8</data>
+      <data key="v_comp_team">Mentor</data>
+    </node>
+    <node id="n10">
+      <data key="v_name">U01CT0ZAS2J</data>
+      <data key="v_Team">Mentor</data>
+      <data key="v_index">#AB98C8</data>
+      <data key="v_comp_team">Mentor</data>
+    </node>
+    <node id="n11">
+      <data key="v_name">U01DCBKGS01</data>
+      <data key="v_Team">Mentor</data>
+      <data key="v_index">#AB98C8</data>
+      <data key="v_comp_team">Mentor</data>
+    </node>
+    <node id="n12">
+      <data key="v_name">U01DW7PF3PW</data>
+      <data key="v_Team">Mentor</data>
+      <data key="v_index">#AB98C8</data>
+      <data key="v_comp_team">Mentor</data>
+    </node>
+    <node id="n13">
+      <data key="v_name">U01DHTV55A9</data>
+      <data key="v_Team">NO IDEA</data>
+      <data key="v_index">#E1D83B</data>
+      <data key="v_comp_team">NO IDEA</data>
+    </node>
+    <node id="n14">
+      <data key="v_name">U01DCBKSX3K</data>
+      <data key="v_Team">Organiser</data>
+      <data key="v_index">#E99073</data>
+      <data key="v_comp_team">Organiser</data>
+    </node>
+    <node id="n15">
+      <data key="v_name">U01CZNGDK4J</data>
+      <data key="v_Team">Organiser</data>
+      <data key="v_index">#E99073</data>
+      <data key="v_comp_team">Organiser</data>
+    </node>
+    <node id="n16">
+      <data key="v_name">U01CRKKRPAS</data>
+      <data key="v_Team">Organiser</data>
+      <data key="v_index">#E99073</data>
+      <data key="v_comp_team">Organiser</data>
+    </node>
+    <node id="n17">
+      <data key="v_name">U01DPHUPUM6</data>
+      <data key="v_Team">Organiser</data>
+      <data key="v_index">#E99073</data>
+      <data key="v_comp_team">Organiser</data>
+    </node>
+    <node id="n18">
+      <data key="v_name">U01CZNGBYBU</data>
+      <data key="v_Team">Organiser</data>
+      <data key="v_index">#E99073</data>
+      <data key="v_comp_team">Organiser</data>
+    </node>
+    <node id="n19">
+      <data key="v_name">U01ECRPS1S4</data>
+      <data key="v_Team">Organiser</data>
+      <data key="v_index">#E99073</data>
+      <data key="v_comp_team">Organiser</data>
+    </node>
+    <node id="n20">
+      <data key="v_name">U01CK0PV0KH</data>
+      <data key="v_Team">Organiser</data>
+      <data key="v_index">#E99073</data>
+      <data key="v_comp_team">Organiser</data>
+    </node>
+    <node id="n21">
+      <data key="v_name">U01CZUK9REX</data>
+      <data key="v_Team">Organiser</data>
+      <data key="v_index">#E99073</data>
+      <data key="v_comp_team">Organiser</data>
+    </node>
+    <node id="n22">
+      <data key="v_name">U01D9NTHMPE</data>
+      <data key="v_Team">Project Partner</data>
+      <data key="v_index">#E9C783</data>
+      <data key="v_comp_team">Project Partner</data>
+    </node>
+    <node id="n23">
+      <data key="v_name">U01CWRYL2VC</data>
+      <data key="v_Team">Project Partner</data>
+      <data key="v_index">#E9C783</data>
+      <data key="v_comp_team">Project Partner</data>
+    </node>
+    <node id="n24">
+      <data key="v_name">U01D9NTG8HJ</data>
+      <data key="v_Team">Project Partner</data>
+      <data key="v_index">#E9C783</data>
+      <data key="v_comp_team">Project Partner</data>
+    </node>
+    <node id="n25">
+      <data key="v_name">U01DDFNJ93N</data>
+      <data key="v_Team">Rainwater Collection</data>
+      <data key="v_index">#66C2A5</data>
+      <data key="v_comp_team">Team</data>
+    </node>
+    <node id="n26">
+      <data key="v_name">U01D0V6J17Y</data>
+      <data key="v_Team">Flood Finder</data>
+      <data key="v_index">#66C2A5</data>
+      <data key="v_comp_team">Team</data>
+    </node>
+    <node id="n27">
+      <data key="v_name">U01D19UEZPX</data>
+      <data key="v_Team">Ecolution</data>
+      <data key="v_index">#66C2A5</data>
+      <data key="v_comp_team">Team</data>
+    </node>
+    <node id="n28">
+      <data key="v_name">U01DB9MEHTP</data>
+      <data key="v_Team">Collaborative Water Monitoring</data>
+      <data key="v_index">#66C2A5</data>
+      <data key="v_comp_team">Team</data>
+    </node>
+    <node id="n29">
+      <data key="v_name">U01D0BAHR7X</data>
+      <data key="v_Team">Collaborative Water Monitoring</data>
+      <data key="v_index">#66C2A5</data>
+      <data key="v_comp_team">Team</data>
+    </node>
+    <node id="n30">
+      <data key="v_name">U01D80MDYG2</data>
+      <data key="v_Team">Collaborative Water Monitoring</data>
+      <data key="v_index">#66C2A5</data>
+      <data key="v_comp_team">Team</data>
+    </node>
+    <node id="n31">
+      <data key="v_name">U01E3TPUC68</data>
+      <data key="v_Team">Thousand Waters</data>
+      <data key="v_index">#66C2A5</data>
+      <data key="v_comp_team">Team</data>
+    </node>
+    <node id="n32">
+      <data key="v_name">U01D8CCQWCA</data>
+      <data key="v_Team">Rainwater Collection</data>
+      <data key="v_index">#66C2A5</data>
+      <data key="v_comp_team">Team</data>
+    </node>
+    <node id="n33">
+      <data key="v_name">U01DTCMB9CY</data>
+      <data key="v_Team">FEWS</data>
+      <data key="v_index">#66C2A5</data>
+      <data key="v_comp_team">Team</data>
+    </node>
+    <node id="n34">
+      <data key="v_name">U01DW7ULJC9</data>
+      <data key="v_Team">Thousand Waters</data>
+      <data key="v_index">#66C2A5</data>
+      <data key="v_comp_team">Team</data>
+    </node>
+    <node id="n35">
+      <data key="v_name">U01D5Q8FS74</data>
+      <data key="v_Team">Collaborative Water Monitoring</data>
+      <data key="v_index">#66C2A5</data>
+      <data key="v_comp_team">Team</data>
+    </node>
+    <node id="n36">
+      <data key="v_name">U01DGEXNXSM</data>
+      <data key="v_Team">Aquatics</data>
+      <data key="v_index">#66C2A5</data>
+      <data key="v_comp_team">Team</data>
+    </node>
+    <node id="n37">
+      <data key="v_name">U01D85RH0RL</data>
+      <data key="v_Team">Garuda Savior</data>
+      <data key="v_index">#66C2A5</data>
+      <data key="v_comp_team">Team</data>
+    </node>
+    <node id="n38">
+      <data key="v_name">U01D9QMSWDB</data>
+      <data key="v_Team">Flood Finder</data>
+      <data key="v_index">#66C2A5</data>
+      <data key="v_comp_team">Team</data>
+    </node>
+    <node id="n39">
+      <data key="v_name">U01E6NCJUJF</data>
+      <data key="v_Team">Warbon Footprint</data>
+      <data key="v_index">#66C2A5</data>
+      <data key="v_comp_team">Team</data>
+    </node>
+    <node id="n40">
+      <data key="v_name">U01CP48A8NT</data>
+      <data key="v_Team">MNL</data>
+      <data key="v_index">#66C2A5</data>
+      <data key="v_comp_team">Team</data>
+    </node>
+    <node id="n41">
+      <data key="v_name">U01E3DKE5QD</data>
+      <data key="v_Team">Warbon Footprint</data>
+      <data key="v_index">#66C2A5</data>
+      <data key="v_comp_team">Team</data>
+    </node>
+    <node id="n42">
+      <data key="v_name">U01D397D5DL</data>
+      <data key="v_Team">Safe water for homeless</data>
+      <data key="v_index">#66C2A5</data>
+      <data key="v_comp_team">Team</data>
+    </node>
+    <node id="n43">
+      <data key="v_name">U01D5U28EMB</data>
+      <data key="v_Team">Garuda Savior</data>
+      <data key="v_index">#66C2A5</data>
+      <data key="v_comp_team">Team</data>
+    </node>
+    <node id="n44">
+      <data key="v_name">U01DNKZV8LR</data>
+      <data key="v_Team">Safe water for homeless</data>
+      <data key="v_index">#66C2A5</data>
+      <data key="v_comp_team">Team</data>
+    </node>
+    <node id="n45">
+      <data key="v_name">U01DTHU50RE</data>
+      <data key="v_Team">FEWS</data>
+      <data key="v_index">#66C2A5</data>
+      <data key="v_comp_team">Team</data>
+    </node>
+    <node id="n46">
+      <data key="v_name">U01D0LHNDQV</data>
+      <data key="v_Team">Potamoi</data>
+      <data key="v_index">#66C2A5</data>
+      <data key="v_comp_team">Team</data>
+    </node>
+    <node id="n47">
+      <data key="v_name">U01D3MSU9HR</data>
+      <data key="v_Team">MNL</data>
+      <data key="v_index">#66C2A5</data>
+      <data key="v_comp_team">Team</data>
+    </node>
+    <node id="n48">
+      <data key="v_name">U01CZRPQLJJ</data>
+      <data key="v_Team">Rainwater Harvesting</data>
+      <data key="v_index">#66C2A5</data>
+      <data key="v_comp_team">Team</data>
+    </node>
+    <node id="n49">
+      <data key="v_name">U01D2ER0VFF</data>
+      <data key="v_Team">Ecolution</data>
+      <data key="v_index">#66C2A5</data>
+      <data key="v_comp_team">Team</data>
+    </node>
+    <node id="n50">
+      <data key="v_name">U01D3MR3E4T</data>
+      <data key="v_Team">Daily Water</data>
+      <data key="v_index">#66C2A5</data>
+      <data key="v_comp_team">Team</data>
+    </node>
+    <node id="n51">
+      <data key="v_name">U01DNKXRKL1</data>
+      <data key="v_Team">Potamoi</data>
+      <data key="v_index">#66C2A5</data>
+      <data key="v_comp_team">Team</data>
+    </node>
+    <node id="n52">
+      <data key="v_name">U01DQQD64TT</data>
+      <data key="v_Team">Filsteiner</data>
+      <data key="v_index">#66C2A5</data>
+      <data key="v_comp_team">Team</data>
+    </node>
+    <node id="n53">
+      <data key="v_name">U01DTA67SU8</data>
+      <data key="v_Team">To See To Care</data>
+      <data key="v_index">#66C2A5</data>
+      <data key="v_comp_team">Team</data>
+    </node>
+    <node id="n54">
+      <data key="v_name">U01D3Q06135</data>
+      <data key="v_Team">Daily Water</data>
+      <data key="v_index">#66C2A5</data>
+      <data key="v_comp_team">Team</data>
+    </node>
+    <node id="n55">
+      <data key="v_name">U01DAU73TS7</data>
+      <data key="v_Team">Garuda Savior</data>
+      <data key="v_index">#66C2A5</data>
+      <data key="v_comp_team">Team</data>
+    </node>
+    <node id="n56">
+      <data key="v_name">U01D0T9DUKF</data>
+      <data key="v_Team">Wotter</data>
+      <data key="v_index">#66C2A5</data>
+      <data key="v_comp_team">Team</data>
+    </node>
+    <node id="n57">
+      <data key="v_name">U01DXJALY9E</data>
+      <data key="v_Team">Flood Maps</data>
+      <data key="v_index">#66C2A5</data>
+      <data key="v_comp_team">Team</data>
+    </node>
+    <node id="n58">
+      <data key="v_name">U01DDMRQWMQ</data>
+      <data key="v_Team">Daily Water</data>
+      <data key="v_index">#66C2A5</data>
+      <data key="v_comp_team">Team</data>
+    </node>
+    <node id="n59">
+      <data key="v_name">U01DB341212</data>
+      <data key="v_Team">Aquatics</data>
+      <data key="v_index">#66C2A5</data>
+      <data key="v_comp_team">Team</data>
+    </node>
+    <node id="n60">
+      <data key="v_name">U01DCMNTPHS</data>
+      <data key="v_Team">Rainwater Harvesting</data>
+      <data key="v_index">#66C2A5</data>
+      <data key="v_comp_team">Team</data>
+    </node>
+    <node id="n61">
+      <data key="v_name">U01D0H609K7</data>
+      <data key="v_Team">Aquatics</data>
+      <data key="v_index">#66C2A5</data>
+      <data key="v_comp_team">Team</data>
+    </node>
+    <node id="n62">
+      <data key="v_name">U01DA1GEN1G</data>
+      <data key="v_Team">Safe water for homeless</data>
+      <data key="v_index">#66C2A5</data>
+      <data key="v_comp_team">Team</data>
+    </node>
+    <node id="n63">
+      <data key="v_name">U01DHD3GAR2</data>
+      <data key="v_Team">Garuda Savior</data>
+      <data key="v_index">#66C2A5</data>
+      <data key="v_comp_team">Team</data>
+    </node>
+    <node id="n64">
+      <data key="v_name">U01D9K9KE3W</data>
+      <data key="v_Team">To See To Care</data>
+      <data key="v_index">#66C2A5</data>
+      <data key="v_comp_team">Team</data>
+    </node>
+    <node id="n65">
+      <data key="v_name">U01DBV0QWTX</data>
+      <data key="v_Team">Warbon Footprint</data>
+      <data key="v_index">#66C2A5</data>
+      <data key="v_comp_team">Team</data>
+    </node>
+    <node id="n66">
+      <data key="v_name">U01E6G1RX18</data>
+      <data key="v_Team">Warbon Footprint</data>
+      <data key="v_index">#66C2A5</data>
+      <data key="v_comp_team">Team</data>
+    </node>
+    <node id="n67">
+      <data key="v_name">U01DCFTH0PN</data>
+      <data key="v_Team">Ecolution</data>
+      <data key="v_index">#66C2A5</data>
+      <data key="v_comp_team">Team</data>
+    </node>
+    <node id="n68">
+      <data key="v_name">U01D45T9LUB</data>
+      <data key="v_Team">Wotter</data>
+      <data key="v_index">#66C2A5</data>
+      <data key="v_comp_team">Team</data>
+    </node>
+    <edge source="n45" target="n16">
+      <data key="e_Timestamp">1603375960.0082</data>
+      <data key="e_Channel">ask-a-mentor</data>
+      <data key="e_Type">text_mentions</data>
+    </edge>
+    <edge source="n16" target="n45">
+      <data key="e_Timestamp">1603430751.0001</data>
+      <data key="e_Channel">ask-a-mentor</data>
+      <data key="e_Type">text_mentions</data>
+    </edge>
+    <edge source="n16" target="n68">
+      <data key="e_Timestamp">1603430855.0003</data>
+      <data key="e_Channel">ask-a-mentor</data>
+      <data key="e_Type">text_mentions</data>
+    </edge>
+    <edge source="n29" target="n16">
+      <data key="e_Timestamp">1603450254.0083</data>
+      <data key="e_Channel">ask-a-mentor</data>
+      <data key="e_Type">text_mentions</data>
+    </edge>
+    <edge source="n29" target="n35">
+      <data key="e_Timestamp">1603450254.0083</data>
+      <data key="e_Channel">ask-a-mentor</data>
+      <data key="e_Type">text_mentions</data>
+    </edge>
+    <edge source="n29" target="n35">
+      <data key="e_Timestamp">1603450254.0083</data>
+      <data key="e_Channel">ask-a-mentor</data>
+      <data key="e_Type">text_mentions</data>
+    </edge>
+    <edge source="n16" target="n29">
+      <data key="e_Timestamp">1603452308.0121</data>
+      <data key="e_Channel">ask-a-mentor</data>
+      <data key="e_Type">text_mentions</data>
+    </edge>
+    <edge source="n29" target="n16">
+      <data key="e_Timestamp">1603453572.0159</data>
+      <data key="e_Channel">ask-a-mentor</data>
+      <data key="e_Type">text_mentions</data>
+    </edge>
+    <edge source="n45" target="n16">
+      <data key="e_Timestamp">1603724101.0028</data>
+      <data key="e_Channel">ask-a-mentor</data>
+      <data key="e_Type">text_mentions</data>
+    </edge>
+    <edge source="n16" target="n45">
+      <data key="e_Timestamp">1603724398.0043</data>
+      <data key="e_Channel">ask-a-mentor</data>
+      <data key="e_Type">text_mentions</data>
+    </edge>
+    <edge source="n68" target="n16">
+      <data key="e_Timestamp">1603724639.0066</data>
+      <data key="e_Channel">ask-a-mentor</data>
+      <data key="e_Type">text_mentions</data>
+    </edge>
+    <edge source="n16" target="n68">
+      <data key="e_Timestamp">1603724833.0067</data>
+      <data key="e_Channel">ask-a-mentor</data>
+      <data key="e_Type">text_mentions</data>
+    </edge>
+    <edge source="n68" target="n16">
+      <data key="e_Timestamp">1603725153.0069</data>
+      <data key="e_Channel">ask-a-mentor</data>
+      <data key="e_Type">text_mentions</data>
+    </edge>
+    <edge source="n59" target="n16">
+      <data key="e_Timestamp">1603777651.005</data>
+      <data key="e_Channel">ask-a-mentor</data>
+      <data key="e_Type">text_mentions</data>
+    </edge>
+    <edge source="n16" target="n59">
+      <data key="e_Timestamp">1603786314.0064</data>
+      <data key="e_Channel">ask-a-mentor</data>
+      <data key="e_Type">text_mentions</data>
+    </edge>
+    <edge source="n16" target="n42">
+      <data key="e_Timestamp">1603786430.007</data>
+      <data key="e_Channel">ask-a-mentor</data>
+      <data key="e_Type">text_mentions</data>
+    </edge>
+    <edge source="n46" target="n16">
+      <data key="e_Timestamp">1603791095.0085</data>
+      <data key="e_Channel">ask-a-mentor</data>
+      <data key="e_Type">text_mentions</data>
+    </edge>
+    <edge source="n16" target="n46">
+      <data key="e_Timestamp">1603791357.0116</data>
+      <data key="e_Channel">ask-a-mentor</data>
+      <data key="e_Type">text_mentions</data>
+    </edge>
+    <edge source="n16" target="n46">
+      <data key="e_Timestamp">1603791731.0127</data>
+      <data key="e_Channel">ask-a-mentor</data>
+      <data key="e_Type">text_mentions</data>
+    </edge>
+    <edge source="n40" target="n16">
+      <data key="e_Timestamp">1603797783.0154</data>
+      <data key="e_Channel">ask-a-mentor</data>
+      <data key="e_Type">text_mentions</data>
+    </edge>
+    <edge source="n16" target="n40">
+      <data key="e_Timestamp">1603798188.0155</data>
+      <data key="e_Channel">ask-a-mentor</data>
+      <data key="e_Type">text_mentions</data>
+    </edge>
+    <edge source="n45" target="n16">
+      <data key="e_Timestamp">1603798483.0175</data>
+      <data key="e_Channel">ask-a-mentor</data>
+      <data key="e_Type">text_mentions</data>
+    </edge>
+    <edge source="n28" target="n16">
+      <data key="e_Timestamp">1603825560.0183</data>
+      <data key="e_Channel">ask-a-mentor</data>
+      <data key="e_Type">text_mentions</data>
+    </edge>
+    <edge source="n16" target="n28">
+      <data key="e_Timestamp">1603829331.0184</data>
+      <data key="e_Channel">ask-a-mentor</data>
+      <data key="e_Type">text_mentions</data>
+    </edge>
+    <edge source="n16" target="n32">
+      <data key="e_Timestamp">1603870885.0277</data>
+      <data key="e_Channel">ask-a-mentor</data>
+      <data key="e_Type">text_mentions</data>
+    </edge>
+    <edge source="n29" target="n16">
+      <data key="e_Timestamp">1603871115.0318</data>
+      <data key="e_Channel">ask-a-mentor</data>
+      <data key="e_Type">text_mentions</data>
+    </edge>
+    <edge source="n16" target="n29">
+      <data key="e_Timestamp">1603871258.0319</data>
+      <data key="e_Channel">ask-a-mentor</data>
+      <data key="e_Type">text_mentions</data>
+    </edge>
+    <edge source="n29" target="n16">
+      <data key="e_Timestamp">1603871304.0321</data>
+      <data key="e_Channel">ask-a-mentor</data>
+      <data key="e_Type">text_mentions</data>
+    </edge>
+    <edge source="n29" target="n16">
+      <data key="e_Timestamp">1603903912.0327</data>
+      <data key="e_Channel">ask-a-mentor</data>
+      <data key="e_Type">text_mentions</data>
+    </edge>
+    <edge source="n59" target="n16">
+      <data key="e_Timestamp">1603913215.0384</data>
+      <data key="e_Channel">ask-a-mentor</data>
+      <data key="e_Type">text_mentions</data>
+    </edge>
+    <edge source="n59" target="n16">
+      <data key="e_Timestamp">1604600019.0108</data>
+      <data key="e_Channel">ask-a-mentor</data>
+      <data key="e_Type">text_mentions</data>
+    </edge>
+    <edge source="n16" target="n59">
+      <data key="e_Timestamp">1604658941.0109</data>
+      <data key="e_Channel">ask-a-mentor</data>
+      <data key="e_Type">text_mentions</data>
+    </edge>
+    <edge source="n16" target="n59">
+      <data key="e_Timestamp">1604659180.0111</data>
+      <data key="e_Channel">ask-a-mentor</data>
+      <data key="e_Type">text_mentions</data>
+    </edge>
+    <edge source="n16" target="n19">
+      <data key="e_Timestamp">1604659180.0111</data>
+      <data key="e_Channel">ask-a-mentor</data>
+      <data key="e_Type">text_mentions</data>
+    </edge>
+    <edge source="n59" target="n16">
+      <data key="e_Timestamp">1604687969.0122</data>
+      <data key="e_Channel">ask-a-mentor</data>
+      <data key="e_Type">text_mentions</data>
+    </edge>
+  </graph>
+</graphml>

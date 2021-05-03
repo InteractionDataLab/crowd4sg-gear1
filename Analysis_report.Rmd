@@ -1,0 +1,674 @@
+---
+title: "Crowd4SDG Slack - Analysis for Report"
+output: html_notebook
+---
+
+Analysis on the Crowd4SDG Slack included in the Report
+
+
+```{r}
+
+library("RColorBrewer") #Color Palette
+library("wordcloud") #Wordcloud Library
+library("jsonlite") #Handling JSON Files
+library("ggplot2") #Plots
+library("igraph") #Networks and Analysis
+library("scales") #Plot Aesthetics
+library("visNetwork") #D3 based Network Plots
+library("plotly") #Plots
+library("dplyr") #Dataframe Manipulations
+library("qgraph") #Network analyis and Plots
+library("networkD3") #Sankey
+
+source("custom.R") #Some Custom Functions (courtesy Marc)
+
+```
+
+```{r}
+
+users_df = read.csv("data_files/users_an.csv") #Users Meta
+
+channels_df = read.csv("data_files/channels.csv") #Channels Meta
+df_emoticon_responses = read.csv("data_files/emoticon_responses.csv")[,-c(1)] #Emoticon Responses
+df_text_mentions = read.csv("data_files/text_mentions.csv")[,-c(1)] #Text Mentions
+df_texts = read.csv("data_files/texts_channel.csv")[,-c(1)] #Messages
+df_channel_join = read.csv("data_files/channel_join.csv")[,-c(1)] #Channel Join Messages
+df_threads = read.csv("data_files/threads_channel.csv")[,-c(1)] #Threads
+
+df_th_rep = read.csv("data_files/thread_replies.csv")[,c(-1)] #Thread Replies
+
+teams = c("team-aquatics", "team-floodfinder", "team-toseetocare", "team-safewaterforhomeless", "team-wotter", "team-collaborativewatermonitoring", "teamfloodmaps", "team-filsteiner", "team-mnl", "team-rainwaterharvesting", "team-garudasavior", "team-safeskye", "team-fews", "team-rainwater-collection", "team-potamoi", "team-dailywater", "team_ecolution", "team-thousand-waters", "warbon-footprint")
+
+
+
+```
+
+Plot Functions
+
+```{r}
+
+#Toggle for arrowheads if directed
+
+visPlot_ni = function(subgraph, communities = rep(1, length(V(subgraph))), nodesize = 10, edgewidth = 0, title="", textsize = nodesize, layout = "layout_nicely", directed = TRUE)
+{
+  nodes <- data.frame(id = V(subgraph)$name, name = V(subgraph)$print, group = communities)
+  nodes$font.size<-textsize + 20
+  nodes$font.color = "grey"
+  nodes$font.face = "calibri"
+  nodes$label = nodes$name
+  nodes$value = nodesize
+  edges <- data.frame(get.edgelist(subgraph))
+  edges$width = edgewidth
+  colnames(edges)<-c("from","to","width")
+  plt = visNetwork(nodes, edges, height = "1000px", width = "100%",main = title)%>%
+    visIgraphLayout(layout = layout) %>%
+    visPhysics(solver = "repulsion", hierarchicalRepulsion = "nodeDistance") %>%
+    visOptions(highlightNearest = TRUE) %>%
+    visNodes(scaling = list(min = 10, max = 30)) %>%
+    visEdges(smooth = T, color = list(color = "lightblue", highlight = "blue")) %>% 
+    visGroups(groupname = "2", color = list(background = "lightgray",border = "black")) %>%
+    visInteraction(keyboard = T,
+                   dragNodes = T, 
+                   dragView = T, 
+                   zoomView = T)
+  
+  if (directed == TRUE)
+    plt = plt %>% visEdges(arrows ="to")
+  
+  return(plt)
+}
+
+#Plot Function with qgraph library
+plotNetwork <- function(Gsub, layout='default',maine='', coms=NULL, teams = NULL){
+  
+  
+  if (is.null(coms)){
+    com <- cluster_walktrap(Gsub)
+    V(Gsub)$color <- com$membership+1
+  } else {
+    #col = merge(data.frame(team = coms), list)
+    V(Gsub)$color <- coms
+  }
+  vertex.frame.color <- V(Gsub)$color
+  
+  size <- abs(strength(Gsub, loops=T))
+  if (max(size, na.rm=T)>0){ 
+    size <- 30 * size / max(size, na.rm=T)
+  } else {
+    size <- 1
+  }
+  
+  if (is.null(E(Gsub)$weight)){
+    width <- 1
+    edge.color <- NA 
+    l <- layout_with_fr
+    
+  } else{
+    weight <- abs(E(Gsub)$weight)
+    width <- .01 + 5 * weight / max(weight, na.rm=T)
+    edge.color <- ifelse(E(Gsub)$weight > 0, 'gray', 'blue')
+    e <- get.edgelist(Gsub, names=F)
+    e <- cbind(e, E(Gsub)$weight)
+    l <- qgraph.layout.fruchtermanreingold(e,
+                                           vcount=vcount(Gsub),
+                                           area=1*(vcount(Gsub)^2),
+                                           repulse.rad=5*(vcount(Gsub)^2))
+    
+  }
+  
+  if (layout!='default'){
+    l <- layout
+  }
+  
+  plot(Gsub,
+       layout=l,
+       edge.width = width,
+       edge.color=edge.color,
+       vertex.label = V(Gsub)$Name,
+       vertex.label.color = "black",
+       vertex.label.cex = 0.7,
+       vertex.size = 3 * sqrt(size),
+       edge.curved=0.1,
+       vertex.frame.color = vertex.frame.color, 
+       edge.arrow.width = 0.1,
+       edge.arrow.size = 0.1,
+#       main=maine,
+#       main.cex = 0.3,
+       col='gray'
+)
+  title(main = maine , cex.main = 0.7)
+  return(l)
+}
+
+```
+
+# Sort Activity by Week
+
+```{r}
+
+Sys.setenv(TZ="GMT")
+df_texts$source_message_timestamp = as.POSIXct(df_texts$source_message_timestamp, origin = "1970-01-01")
+
+df_channel_activity_weekly = data.frame()
+
+for (i in unique(df_texts$channel))
+{
+  if (T)
+  {
+    obj = hist(df_texts$source_message_timestamp[df_texts$channel == i], breaks = "weeks", plot = F)
+    for (j in 1:length(obj$counts))
+    {
+      df_channel_activity_weekly = rbind(df_channel_activity_weekly, data.frame(channel = i, activity = obj$counts[j], weeks = obj$breaks[j]))
+    }
+  }
+  
+}
+```
+
+# Wordclouds
+
+```{r,fig.height=4, fig.width=4}
+
+list = sort(unique(df_channel_activity_weekly$weeks))
+weeks = list
+wc = list()
+
+dir.create('viz', showWarnings = F)
+
+
+for (i in list[1:(length(list))])
+{
+  set.seed(1234)
+  # print(as.POSIXct(i, origin = "1970-01-01"))
+  pdf(paste0('viz/wordclouds_week',match(i,list),'.pdf'), 10, 10)
+  # par(mfrow=c(3,3))
+   wc = wordcloud(words = df_channel_activity_weekly$channel[df_channel_activity_weekly$weeks == i], 
+                  freq = df_channel_activity_weekly$activity[df_channel_activity_weekly$weeks == i], 
+                  min.freq = 0,max.words=100, random.order=FALSE, rot.per=0, colors=brewer.pal(8, "Dark2")) 
+   dev.off()
+}
+
+```
+
+
+# Timezones 
+
+```{r, gig.width=3, fig.height=2}
+plt = ggplot(users_df, aes(x = reorder(timezone,timezone,
+                     function(x)-length(x)))) + 
+  geom_bar(stat = "count") + 
+  theme_bw() + 
+  # theme(axis.text.x = element_text(angle = 90,hjust=0.95,vjust=0.2)) + 
+     theme(axis.text.x = element_text(angle = 45,hjust=1,vjust=1)) + 
+  ylab("Number of Users") + 
+  # scale_y_log10() +
+  ggtitle("Users Timezones" )  + 
+  theme(legend.position = "none") + 
+  xlab("Timezones")
+ggplotly(plt)
+```
+
+
+```{r, gig.width=3, fig.height=2}
+ggsave('viz/timezones.pdf', width = 7, height = 4)
+```
+
+
+# Channel activity
+
+```{r}
+
+
+# tot = aggregate(df_channel_activity_monthly$activity, by = list(channel =df_channel_activity_monthly$channel), FUN = sum)
+
+tb = table(df_texts$channel)
+tot = data.frame('channel'=names(tb), x = as.numeric(tb))
+# tot$x = tot$x/sum(tot$x)
+
+ plt = ggplot(tot, aes(x=reorder(channel,x), y = x)) + 
+   geom_bar(stat = "identity") + theme_bw(base_size = 15) + 
+   # theme(axis.text.x = element_text(face = "bold", angle = 90)) + 
+     theme(axis.text.x = element_text(angle = 45,hjust=1,vjust=1)) + 
+   xlab("") + ylab("Number of Posts") + ggtitle("Total number of posts" )  + theme(legend.position = "none") + coord_flip() 
+ #+ scale_y_log10()
+ 
+ggplotly(plt)
+```
+
+
+
+```{r, gig.width=3, fig.height=2}
+ggsave('viz/channels.pdf', width = 7, height = 8)
+```
+
+
+Country of Origin
+
+
+Sankey Location
+
+```{r}
+
+country = read.csv("data_files/participants.csv", stringsAsFactors = FALSE)
+
+nodes = data.frame(Name = union(country$Nationality, country$Team.Name))
+
+links = country[,c("Team.Name", "Nationality")] %>% group_by(Team.Name, Nationality) %>% summarise(count = n())
+links$IDsource <- match(links$Team.Name, nodes$Name)-1 
+links$IDtarget <- match(links$Nationality, nodes$Name)-1
+
+plt = sankeyNetwork(Links = links, Nodes = nodes,
+                     Source = "IDsource", Target = "IDtarget",
+                     Value = "count", NodeID = "Name", 
+                     sinksRight=FALSE, fontSize = 13)
+plt
+
+visSave(plt, 'viz/sankey_nationalities.html')
+
+#ggsave('viz/sankey_nationality.pdf', height=5, width=10)
+```
+
+Sankey Timezone
+
+```{r}
+org_team_part = users_df[!users_df$Team %in% c("Organiser", "Mentor", "Project Partner", "NO IDEA", "External Resource"),]
+org_team_part = org_team_part[!grepl("Dropped Out", org_team_part$Team),]
+
+#org_team_part$Team = as.character(org_team_part$Team)
+
+nodes = data.frame(Name = union(org_team_part$Team, org_team_part$timezone))
+nodes$Name = as.factor(nodes$Name)
+
+
+links = org_team_part[,c("Team", "timezone")] %>% group_by(Team, timezone) %>% summarise(count = n())
+links$IDsource <- match(links$Team, nodes$Name)-1 
+links$IDtarget <- match(links$timezone, nodes$Name)-1
+
+plt = sankeyNetwork(Links = links, Nodes = nodes,
+                     Source = "IDsource", Target = "IDtarget",
+                     Value = "count", NodeID = "Name", 
+                     sinksRight=FALSE, fontSize = 13)
+plt
+
+visSave(plt, 'viz/sankey_timezones.html')
+
+#ggsave('viz/sankey_timezones.pdf', height=5, width=10)
+
+```
+
+
+
+No. of Posts + Heatmap (Cut after week 6)
+
+# Channel dynamics (Heatmap of Activity)
+
+```{r}
+
+store = function(a)
+{
+  if (is.integer(a) & length(a)==0)
+    return(0)
+  else
+    return(a)
+}
+
+weeks = sort(unique(df_channel_activity_weekly$weeks))
+channels = unique(df_channel_activity_weekly$channel)
+
+channel_act_mat = matrix(0, nrow = length(channels), ncol = length(weeks))
+
+
+for (i in 1:length(weeks))
+{
+  for (j in 1:length(channels))
+  {
+    channel_act_mat[j,i] = store(df_channel_activity_weekly$activity[df_channel_activity_weekly$channel %in% channels[j] & df_channel_activity_weekly$weeks == weeks[i]])
+  }
+  
+}
+
+colnames(channel_act_mat) = as.POSIXct(weeks, origin = "1970-01-01")
+rownames(channel_act_mat) = channels
+
+
+```
+
+
+
+```{r}
+data <- df_channel_activity_weekly
+months <- sort(unique(data$weeks))
+channels <- unique(data$channel)
+
+M <- matrix(NA,length(channels), length(weeks))
+
+for (i in 1:nrow(data)){
+  M[match(data$channel[i], channels), match(data$weeks[i], weeks)] <- data$activity[i]
+}
+
+rownames(M) <- channels
+colnames(M) <- paste('Week',1:ncol(M))
+
+```
+
+
+```{r, fig.height=5, fig.width=4}
+
+pdf('viz/channels_heatmap.pdf', 7,10)
+
+peak <- apply(M,1, which.max)
+M1 <- M / apply(M,1,max, na.rm=T)
+
+M1[is.na(M1)] <- 0
+heatmap.0(M1[order(peak),1:6], cexRow = 1, cexCol = 2, col=colorRampPalette(c("white","darkred")), mar=c(10,15))
+
+dev.off()
+```
+
+
+```{r, fig.width=3, fig.asp=1}
+
+tot_posts <- apply(M,2,sum, na.rm=T)
+
+pdf('viz/activity_total.pdf', 6,6)
+plot.0(tot_posts, type='o', 
+       ylab='Number of posts', xlab='Week', lwd=2)
+dev.off()
+```
+
+Aggregated Mentions and Reaction Networks
+
+```{r}
+#Overall - mentions
+
+text_ment1 = merge(df_text_mentions, users_df[,c("id", "Team")], by.x = "from", by.y = "id")
+colnames(text_ment1)[colnames(text_ment1) == "Team"] = "From_Team"
+
+text_ment1 = merge(text_ment1, users_df[,c("id", "Team")], by.x = "to", by.y = "id")
+colnames(text_ment1)[colnames(text_ment1) == "Team"] = "To_Team"
+
+g_grouped_mentions = graph_from_data_frame(text_ment1[,c("From_Team", "To_Team", "timestamp", "channel", "from", "to")], directed = TRUE)
+
+E(g_grouped_mentions)$weight = 1
+
+g_grouped_mentions = igraph::simplify(g_grouped_mentions, remove.loops = FALSE, remove.multiple = TRUE)
+
+V(g_grouped_mentions)$print = V(g_grouped_mentions)$name
+
+plt = visPlot_ni(g_grouped_mentions, edgewidth = rescale(E(g_grouped_mentions)$weight, to = c(1,10)), nodesize = degree(g_grouped_mentions, mode = "in"))
+
+write.graph(g_grouped_mentions, "networks/grouped_mentions.graphml", format = "graphml")
+
+plt
+
+visSave(plt, 'networks/network_grouped_mention.html')
+```
+
+```{r}
+#Overall - reactions
+
+reac_ment1 = merge(df_emoticon_responses, users_df[,c("id", "Team")], by.x = "reaction_by", by.y = "id")
+colnames(reac_ment1)[colnames(reac_ment1) == "Team"] = "From_Team"
+
+reac_ment1 = merge(reac_ment1, users_df[,c("id", "Team")], by.x = "source_message_from", by.y = "id")
+colnames(reac_ment1)[colnames(reac_ment1) == "Team"] = "To_Team"
+
+g_grouped_reactions = graph_from_data_frame(reac_ment1[,c("From_Team", "To_Team", "source_message_timestamp", "channel", "source_message_from", "reaction_by")], directed = TRUE)
+
+E(g_grouped_reactions)$weight = 1
+
+g_grouped_reactions = igraph::simplify(g_grouped_reactions, remove.loops = FALSE, remove.multiple = TRUE)
+
+V(g_grouped_reactions)$print = V(g_grouped_reactions)$name
+
+plt = visPlot_ni(g_grouped_reactions, edgewidth = rescale(E(g_grouped_reactions)$weight, to = c(1,10)), nodesize = degree(g_grouped_reactions, mode = "in"))
+
+write.graph(g_grouped_reactions, "networks/grouped_reactions.graphml", format = "graphml")
+
+plt
+
+visSave(plt, 'networks/network_grouped_reactions.html')
+
+```
+
+
+Channel wise interaction networks
+
+```{r}
+
+library(RColorBrewer)
+
+#using all interactions
+
+pdf('plotTeamNetworks.pdf')
+par(mfrow=c(5,4), mar=c(0,0,2,0), cex.main=3)
+
+df_emo = df_emoticon_responses[,c(1,2,3,5)]
+colnames(df_emo) = c("From", "To", "Timestamp", "Channel")
+df_emo$Type = "emoticon_responses"
+
+
+df_tmt = df_text_mentions[!df_text_mentions$to %in% c("channel", "here", "everyone"),]
+colnames(df_tmt) = c("From", "To", "Timestamp", "Channel")
+df_tmt$Type = "text_mentions"
+
+df_total = rbind(df_tmt, df_emo)
+
+
+net_list = list()
+j = 1
+
+#channels = unique(df_total$Channel) 
+
+for (i in teams)
+{
+  
+    subs = df_total[df_total$Channel == i,]
+  
+    g_temp = graph_from_data_frame(subs, vertices = users_df[,c("id", "Team", "index", "comp_team")])
+  
+    write.graph(g_temp, paste("channel_nets/", i, ".graphml", sep = ""), format = "graphml")
+  
+    E(g_temp)$weight = 1
+    g_simp_temp = igraph::simplify(g_temp, remove.multiple = TRUE, remove.loops =  FALSE)
+  
+    g_simp_temp = delete_vertices(g_simp_temp, v = V(g_simp_temp)[degree(g_simp_temp) == 0])
+    
+    V(g_simp_temp)$Name = V(g_simp_temp)$comp_team
+  
+    #print(col)
+  
+    net_list[[j]] = g_simp_temp
+    
+    j = j + 1
+    
+    plotNetwork(g_simp_temp, main = i, coms = V(g_simp_temp)$index)
+  
+}
+
+```
+
+Density order networks
+
+```{r}
+
+
+pdf('plotTeamNetworks_ordered.pdf')
+par(mfrow=c(5,4), mar=c(0,0,2,0), cex.main=3)
+
+ordered = order(sapply(net_list, edge_density))
+
+for (i in ordered)
+{
+  g = net_list[[i]]
+  
+  plotNetwork(g, main = teams[i], coms = V(g)$index)
+  
+}
+
+```
+
+Other Channels
+
+```{r}
+
+pdf('plotChannelNetworks.pdf')
+par(mfrow=c(2,2), mar=c(0,0,2,0), cex.main=3)
+
+net_list = list()
+j = 1
+
+for (i in channels_df$name)
+{
+  if(!i %in% teams & nrow(df_total[df_total$Channel == i,]) > 0)
+  {
+    subs = df_total[df_total$Channel == i,]
+  
+    g_temp = graph_from_data_frame(subs, vertices = users_df[,c("id", "Team", "index", "comp_team")])
+  
+    write.graph(g_temp, paste("channel_nets/", i, ".graphml", sep = ""), format = "graphml")
+  
+    E(g_temp)$weight = 1
+    g_simp_temp = igraph::simplify(g_temp, remove.multiple = TRUE, remove.loops =  FALSE)
+  
+    g_simp_temp = delete_vertices(g_simp_temp, v = V(g_simp_temp)[degree(g_simp_temp) == 0])
+    
+    V(g_simp_temp)$Name = V(g_simp_temp)$comp_team
+  
+    net_list[[j]] = g_simp_temp
+    
+    j = j + 1
+    
+    plotNetwork(g_simp_temp, main = i, coms = V(g_simp_temp)$index)
+  }
+}
+
+```
+
+Density order networks
+
+```{r}
+
+
+pdf('plotChannelNetworks_ordered.pdf')
+par(mfrow=c(2,2), mar=c(0,0,2,0), cex.main=3)
+
+ordered = order(sapply(net_list, edge_density))
+
+for (i in ordered)
+{
+  g = net_list[[i]]
+  
+  plotNetwork(g, main = teams[i], coms = V(g)$index)
+  
+}
+
+```
+
+
+Interactions with Org. Team
+
+```{r}
+
+df_org_int = data.frame()
+
+for (i in unique(df_total$Channel))
+{
+  subs = df_total[df_total$Channel == i,]
+  
+  part = users_df$id[!grepl("Dropped Out", users_df$Team)]
+  
+  n = nrow(subs[subs$To %in% users_df$id[users_df$Team %in% c("Mentor", "Organiser", "Project Partner")] & !subs$From %in% users_df$id[users_df$Team %in% c("Mentor", "Organiser", "Project Partner")],])
+  
+  n1 = nrow(subs[!subs$To %in% users_df$id[users_df$Team %in% c("Mentor", "Organiser", "Project Partner")] & subs$From %in% users_df$id[users_df$Team %in% c("Mentor", "Organiser", "Project Partner")],])
+  
+  df_org_int = rbind(df_org_int, data.frame(channel = i, messages_org = n+n1))
+  
+}
+
+```
+
+Plot
+
+```{r}
+
+plt = ggplot(df_org_int[df_org_int$channel %in% teams,], aes(x = reorder(channel, messages_org), y = messages_org)) + geom_bar(stat = "identity") + theme_bw(base_size = 20) + xlab("Teams") + ylab("# Interactions with Org Team") + ggtitle("Interactions with Organising Team") + theme(axis.text.x = element_text(angle = 0,hjust=1,vjust=1)) + coord_flip()
+
+ggplotly(plt)
+
+ggsave('viz/interactions_org_team.pdf', width = 8, height = 6)
+
+```
+
+*******************
+
+Camille's Code
+
+```{r}
+library("gtsummary")
+
+country %>%
+  select(Gender, Age) %>%
+  tbl_summary(
+    statistic = list(all_continuous() ~ "{median} ({min}, {max})",
+                     all_categorical() ~ "{n} ({p}%)"))
+
+#ggsave('viz/gender_tbl_summary.pdf', width = 6, height = 5)
+```
+
+```{r}
+ggplot(country)+
+  aes(x = reorder(Nationality, Nationality, function(x) length(x))) +
+  geom_bar(stat="count",width = 0.9, position = position_dodge())+
+  scale_y_continuous(limits = c(0, 10), breaks = c(0,2,4,6,8,10))+
+  labs(y = "Count",x = "Nationality")+
+  theme_bw() + geom_text(stat = "count", aes(label = ""),
+            position = position_dodge(width = 0.9), size = 2.5, hjust = -0.5)+
+  coord_flip()
+
+ggsave('viz/Nationality.pdf', width = 6, height = 5)
+```  
+
+```{r}
+
+ggplot(country)+
+  aes(x = reorder(Country.of.Residence, Country.of.Residence, function(x) length(x))) +
+  geom_bar(stat="count",width = 0.9, position = position_dodge())+
+  scale_y_continuous(limits = c(0, 10), breaks = c(0,2,4,6,8,10))+
+  labs(y = "Count",x = "Country of origin")+
+  theme_bw() + geom_text(stat = "count", aes(label = ""),
+            position = position_dodge(width = 0.9), size = 2.5, hjust = -0.5)+
+  coord_flip()
+
+ggsave('viz/Country_of_origin.pdf', width = 6, height = 5)
+```
+
+Ecolution has one more member than the plot in the report. That is because of one user who listed their own name as the team name. I matched the user with their corresponding team - Ecolution. 
+
+```{r}
+ggplot(country)+
+  aes(x = reorder(Team.Name, Team.Name, function(x) length(x))) +
+  geom_bar(stat="count",width = 0.9, position = position_dodge())+
+  scale_y_continuous(limits = c(0, 5), breaks = c(0,1,2,3,4, 5))+
+  labs(y = "Count",x = "Teams")+
+  theme_bw() + geom_text(stat = "count", aes(label = ""),
+            position = position_dodge(width = 0.9), size = 2.5, hjust = -0.5)+
+  coord_flip()
+
+ggsave('viz/Team_size.pdf', width = 6, height = 5)
+```
+
+```{r}
+
+country %>%
+  ggplot( aes(x=Gender, y=Age, fill=Gender)) +
+  geom_boxplot()+
+  scale_fill_brewer()+
+  geom_jitter(color="black", size=0.4, alpha=0.9)+
+  scale_y_continuous(breaks = c(10, 15, 20, 25, 30, 35, 40, 45))+
+  labs(x = "", y="Age", fill = "Gender")+
+  theme_bw()
+
+ggsave('viz/Gender_Age.pdf', width = 6, height = 5)
+```
+
